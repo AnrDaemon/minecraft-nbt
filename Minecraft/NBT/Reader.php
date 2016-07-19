@@ -3,10 +3,16 @@
 *
 *
 *
-* @version $Id: Reader.php 177 2016-07-17 23:33:03Z anrdaemon $
+* @version $Id: Reader.php 190 2016-07-19 21:45:04Z anrdaemon $
 */
 
-namespace AnrDaemon\Minecraft\NBT;
+namespace
+{
+  // Plug the built-in debug logging.
+  if(!class_exists('\tool', false)) { final class tool { static function __callStatic($name, $args) {} } }
+}
+namespace AnrDaemon\Minecraft\NBT
+{
 
 if(version_compare(PHP_VERSION, '5.5.11', '<'))
   die('Needs SplFileObject::fread(). Upgrade your PHP.');
@@ -62,4 +68,5 @@ class Reader
 
     return $data;
   }
+}
 }

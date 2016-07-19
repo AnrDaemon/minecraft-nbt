@@ -1,16 +1,18 @@
 <?php
 /** Minecraft NBT Tag base class.
 *
-* @version $Id: Tag.php 187 2016-07-19 19:25:51Z anrdaemon $
+* @version $Id: Tag.php 189 2016-07-19 20:38:29Z anrdaemon $
 */
 
-namespace AnrDaemon\Minecraft\NBT;
-
+namespace
+{
+  // Plug the built-in debug logging.
+  if(!class_exists('\tool', false)) { final class tool { static function __callStatic($name, $args) {} } }
+}
+namespace AnrDaemon\Minecraft\NBT
+{
 use
   JsonSerializable, Serializable, SplFileObject;
-
-// Plug the built-in debug logging.
-if(!class_exists('\tool', false)) { final class tool { static function __callStatic($name, $args) {} } }
 
 abstract class Tag
   implements Serializable, JsonSerializable
@@ -38,4 +40,5 @@ abstract class Tag
 // Serializable
   abstract public function serialize();
   abstract public function unserialize($blob);
+}
 }
