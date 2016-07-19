@@ -1,0 +1,24 @@
+{
+    "name": "anrdaemon/minecraft-nbt",
+    "description": "PHP classes to handle Minecraft NBT (Named Binary Tag) format.",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Andrey Repin",
+            "email": "anrdaemon@yandex.ru"
+        }
+    ],
+    "require": {
+        "php-64bit": "^7"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "AnrDaemon\\Minecraft\\": "Minecraft/"
+        }
+    }
+}
