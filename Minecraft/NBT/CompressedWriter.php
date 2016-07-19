@@ -3,13 +3,10 @@
 *
 *
 *
-* @version $Id: CompressedWriter.php 177 2016-07-17 23:33:03Z anrdaemon $
+* @version $Id: CompressedWriter.php 187 2016-07-19 19:25:51Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
-
-if(version_compare(PHP_VERSION, '5.1', '<'))
-  die('Needs SplFileObject::fwrite(). Upgrade your PHP.');
 
 use
   SplFileObject;
