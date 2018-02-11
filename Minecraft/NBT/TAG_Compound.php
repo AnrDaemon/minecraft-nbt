@@ -6,12 +6,12 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  SplFileObject;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_Compound
-  extends TAG_Array
-  implements NbtTag
+extends TAG_Array
+implements NbtTag
 {
   public static function readFrom(Reader $file, TAG_Array $into = null)
   {
@@ -26,7 +26,7 @@ final class TAG_Compound
     return $self;
   }
 
-  public function save(SplFileObject $file)
+  public function save(\SplFileObject $file)
   {
     $result = parent::save($file);
 

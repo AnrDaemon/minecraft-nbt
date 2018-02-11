@@ -15,16 +15,13 @@ namespace AnrDaemon\Minecraft\NBT
 {
 
 if(version_compare(PHP_VERSION, '5.5.11', '<'))
-  die('Needs SplFileObject::fread(). Upgrade your PHP.');
-
-use
-  SplFileObject, RuntimeException, UnderflowException;
+  trigger_error('Requires SplFileObject::fread(). Upgrade your PHP.', E_USER_ERROR);
 
 class Reader
 {
   protected $file;
 
-  public function __construct(SplFileObject $file)
+  public function __construct(\SplFileObject $file)
   {
     $this->file = $file;
   }
@@ -47,7 +44,7 @@ class Reader
   public function fread($length)
   {
     if($length < 0)
-      throw new RuntimeException("Backward reads are not supported.");
+      throw new \RuntimeException("Backward reads are not supported.");
 
     \tool::fprint("Reading $length from " . get_called_class() . "::" . __FUNCTION__ . "@{$this->file->ftell()}");
 
@@ -56,10 +53,10 @@ class Reader
       $pos = $this->file->ftell();
       $data = $this->file->fread($length);
       if($data === false)
-        throw new RuntimeException("Error while reading from file pointer.");
+        throw new \RuntimeException("Error while reading from file pointer.");
 
       if(strlen($data) < $length)
-        throw new UnderflowException("Read " . strlen($data) . " out of {$length} requested bytes from file pointer @{$pos}.");
+        throw new \UnderflowException("Read " . strlen($data) . " out of {$length} requested bytes from file pointer @{$pos}.");
     }
     else
     {

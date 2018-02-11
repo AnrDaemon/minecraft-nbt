@@ -9,16 +9,13 @@
 namespace AnrDaemon\Minecraft\NBT;
 
 if(version_compare(PHP_VERSION, '5.1', '<'))
-  die('Needs SplFileObject::fwrite(). Upgrade your PHP.');
-
-use
-  SplFileObject;
+  trigger_error('Requires SplFileObject::fwrite(). Upgrade your PHP.', E_USER_ERROR);
 
 class Writer
 {
   protected $file;
 
-  public function __construct(SplFileObject $file)
+  public function __construct(\SplFileObject $file)
   {
     $this->file = $file;
   }

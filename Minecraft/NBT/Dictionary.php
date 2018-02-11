@@ -10,16 +10,13 @@ namespace AnrDaemon\Minecraft\NBT;
 
 define('_IS_BE', unpack('v', pack('S', 1))[1] > 1);
 
-use
-  BadMethodCallException, OutOfBoundsException;
-
 final class Dictionary
 {
   private static $typeMap;
 
   private function __construct()
   {
-    throw new BadMethodCallException('May not initialize tools class.');
+    throw new \BadMethodCallException('May not initialize tools class.');
   }
 
   private static function init()
@@ -46,7 +43,7 @@ final class Dictionary
       self::init();
 
     if(!isset(self::$typeMap[$type]))
-      throw new OutOfBoundsException("Unknown tag type " . ord($type));
+      throw new \OutOfBoundsException("Unknown tag type " . ord($type));
 
     return self::$typeMap[$type];
   }
@@ -61,7 +58,7 @@ final class Dictionary
       $tag = array_search(__NAMESPACE__ . "\\$name", self::$typeMap);
 
     if($tag === false)
-      throw new OutOfBoundsException("Unknown tag name " . ord($type));
+      throw new \OutOfBoundsException("Unknown tag name " . ord($type));
 
     return $tag;
   }

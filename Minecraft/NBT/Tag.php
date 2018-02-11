@@ -11,11 +11,9 @@ namespace
 }
 namespace AnrDaemon\Minecraft\NBT
 {
-use
-  JsonSerializable, Serializable, SplFileObject;
 
 abstract class Tag
-  implements Serializable, JsonSerializable
+implements \Serializable, \JsonSerializable
 {
   protected $id;
   public $name = null;
@@ -25,7 +23,7 @@ abstract class Tag
     $this->id = get_called_class();
   }
 
-  public function save(SplFileObject $file)
+  public function save(\SplFileObject $file)
   {
     \tool::fprint("Saving ... " . get_called_class() . (isset($this->name) ? ":{$this->name}" : '') . "@{$file->ftell()}");
 

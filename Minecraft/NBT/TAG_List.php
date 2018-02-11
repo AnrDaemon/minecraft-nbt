@@ -6,13 +6,12 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  SplFileObject,
-  LogicException, UnexpectedValueException;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_List
-  extends TAG_Array
-  implements NbtTag
+extends TAG_Array
+implements NbtTag
 {
   protected $type;
 
@@ -31,14 +30,14 @@ final class TAG_List
     return $self;
   }
 
-  public function save(SplFileObject $file)
+  public function save(\SplFileObject $file)
   {
     $result = parent::save($file);
     if(isset($this->type))
       $result += $file->fwrite(Dictionary::mapName($this->type));
     else
       if(count($this->content))
-        throw new UnexpectedValueException('Populated list needs an explicit type cast.');
+        throw new \UnexpectedValueException('Populated list needs an explicit type cast.');
       else
         $result += $file->fwrite(Dictionary::mapName('TAG_End'));
 
@@ -57,12 +56,12 @@ final class TAG_List
       else if($tag instanceof $this->type)
       {
         if(isset($tag->name))
-          throw new UnexpectedValueException("List#$index is a named tag.");
+          throw new \UnexpectedValueException("List#$index is a named tag.");
 
         $result += $tag->save($file);
       }
       else
-        throw new UnexpectedValueException("List#$index type '" . get_class($tag) . "' doesn't match the list type '{$this->type}'.");
+        throw new \UnexpectedValueException("List#$index type '" . get_class($tag) . "' doesn't match the list type '{$this->type}'.");
     }
 
     return $result;
@@ -77,7 +76,7 @@ final class TAG_List
         return;
       }
 
-    throw new LogicException("No such property '$name' or it is not writable.");
+    throw new \LogicException("No such property '$name' or it is not writable.");
   }
 
   public function __get($name)
@@ -85,7 +84,7 @@ final class TAG_List
     if($name == 'type')
       return $this->type;
 
-    throw new LogicException("No such property '$name' or it is not readable.");
+    throw new \LogicException("No such property '$name' or it is not readable.");
   }
 
 // JsonSerializable

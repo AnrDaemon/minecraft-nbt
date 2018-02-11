@@ -9,11 +9,12 @@ namespace AnrDaemon\Minecraft\NBT;
 if(strlen(pack('d', 1.2)) <> 8)
   throw new \InvalidArgumentException('Double type byte size needs to be 8. Call ambulance.');
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_Double
-  extends TAG_Value
-  implements NbtTag
+extends TAG_Value
+implements NbtTag
 {
   public static function readFrom(Reader $file)
   {

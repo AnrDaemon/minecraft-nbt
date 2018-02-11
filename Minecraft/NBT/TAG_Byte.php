@@ -6,12 +6,12 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  RangeException;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_Byte
-  extends TAG_Value
-  implements NbtTag
+extends TAG_Value
+implements NbtTag
 {
   public static function readFrom(Reader $file)
   {

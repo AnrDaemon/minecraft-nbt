@@ -6,11 +6,8 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use
-  SplFileObject;
-
 abstract class TAG_Value
-  extends Tag
+extends Tag
 {
   public $value = null;
 
@@ -28,7 +25,7 @@ abstract class TAG_Value
     return new static(TAG_String::readFrom($file), static::readFrom($file));
   }
 
-  public function save(SplFileObject $file)
+  public function save(\SplFileObject $file)
   {
     return parent::save($file) + $file->fwrite(static::store($this->value));
   }

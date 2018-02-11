@@ -9,11 +9,12 @@ namespace AnrDaemon\Minecraft\NBT;
 if(strlen(pack('f', 1.2)) <> 4)
   throw new \InvalidArgumentException('Float type byte size needs to be 4. Call ambulance.');
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_Float
-  extends TAG_Value
-  implements NbtTag
+extends TAG_Value
+implements NbtTag
 {
   public static function readFrom(Reader $file)
   {

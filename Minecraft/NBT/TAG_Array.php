@@ -6,15 +6,9 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use
-  ArrayAccess, Countable, Iterator;
-
 abstract class TAG_Array
-  extends Tag
-  implements
-    ArrayAccess,
-    Countable,
-    Iterator
+extends Tag
+implements \ArrayAccess, \Countable, \Iterator
 {
   protected $content;
   protected $position = 0;

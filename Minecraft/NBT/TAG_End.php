@@ -6,16 +6,16 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  SplFileObject;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_End
-  extends Tag
-  implements NbtTag
+extends Tag
+implements NbtTag
 {
   public static function readFrom(Reader $file)
   {
-    throw new BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
+    throw new \BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
   }
 
   public static function createFrom(Reader $file)
@@ -24,7 +24,7 @@ final class TAG_End
     return new static();
   }
 
-  public function save(SplFileObject $file)
+  public function save(\SplFileObject $file)
   {
     \tool::fprint("Saving ... " . get_called_class());
     return $file->fwrite(Dictionary::mapName($this->id));
