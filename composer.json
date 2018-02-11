@@ -13,6 +13,7 @@
     },
     "extra": {
         "branch-alias": {
+            "dev-trunk": "0.x-dev",
             "dev-master": "0.x-dev"
         }
     },
