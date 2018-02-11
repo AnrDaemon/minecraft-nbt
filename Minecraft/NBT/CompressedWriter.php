@@ -13,7 +13,6 @@ extends Writer
 {
   public function write(Tag $tag)
   {
-    \tool::fprint("Writing ... " . get_called_class() . "@{$this->file->ftell()}");
     $tmp = new \SplFileObject('php://memory', 'wb+');
     $tag->save($tmp);
     $pos = $tmp->ftell();

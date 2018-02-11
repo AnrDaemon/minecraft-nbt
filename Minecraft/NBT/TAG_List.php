@@ -6,12 +6,8 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use
-  AnrDaemon\Minecraft\Interfaces\NbtTag;
-
 final class TAG_List
 extends TAG_Array
-implements NbtTag
 {
   protected $type;
 
@@ -20,9 +16,6 @@ implements NbtTag
     $self = $into ?: new static();
     $type = $self->type = Dictionary::mapType($file->fread(1));
     $size = TAG_Int::readFrom($file);
-
-    if(\tool::debug())
-      \tool::fprint("Reading $size elements of type {$self->type}");
 
     for($i = 0; $i < $size; $i++)
       $self[] = $type::readFrom($file);
@@ -42,9 +35,6 @@ implements NbtTag
         $result += $file->fwrite(Dictionary::mapName('TAG_End'));
 
     $result += $file->fwrite(TAG_Int::store(count($this->content)));
-
-    if(\tool::debug())
-      \tool::fprint("Storing " . count($this->content) . " values of type {$this->type} @{$file->ftell()} ...");
 
     $type = $this->type;
     foreach($this->content as $index => $tag)

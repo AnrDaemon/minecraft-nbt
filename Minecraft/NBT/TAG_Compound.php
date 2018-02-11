@@ -6,16 +6,11 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use
-  AnrDaemon\Minecraft\Interfaces\NbtTag;
-
 final class TAG_Compound
 extends TAG_Array
-implements NbtTag
 {
   public static function readFrom(Reader $file, TAG_Array $into = null)
   {
-    \tool::fprint("Reading ... " . get_called_class() . "::" . __FUNCTION__);
     $self = $into ?: new static();
     while($tag = $file->read())
       if($tag instanceof TAG_End)
@@ -30,22 +25,14 @@ implements NbtTag
   {
     $result = parent::save($file);
 
-    if(\tool::debug())
-      \tool::fprint("Storing " . count($this->content) . " values @{$file->ftell()} ...");
-
-    $i = 1;
     foreach($this->content as $tag)
-    {
+    { // TODO: Check if tag is TAG_End at insetion times.
       if($tag instanceof TAG_End)
         break;
+
       $result += $tag->save($file);
-      $i++;
     }
 
-    if(\tool::debug())
-      if($i < count($this->content))
-        # TODO: Check if the tag is TAG_End at insetion times.
-        \tool::fprint("Stored $i values! Don't stuff TAG_End in the middle of compound tags!");
 
     return $result + $file->fwrite(Dictionary::mapName("TAG_End"));
   }

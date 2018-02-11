@@ -6,16 +6,11 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use
-  AnrDaemon\Minecraft\Interfaces\NbtTag;
-
 final class TAG_String
 extends TAG_Value
-implements NbtTag
 {
   public static function readFrom(Reader $file)
   {
-    \tool::fprint("Reading ... " . get_called_class());
     return (string)$file->fread(TAG_Short::readFrom($file));
   }
 
@@ -25,9 +20,6 @@ implements NbtTag
     $len = strlen($value);
     if($len < 0 || $len > 32767)
       throw new \LengthException('Valid string length range is 0..32767.');
-
-    if(\tool::debug())
-      \tool::fprint("Storing " . get_called_class() . ":$value");
 
     return TAG_Short::store($len) . $value;
   }

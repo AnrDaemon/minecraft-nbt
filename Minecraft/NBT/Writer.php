@@ -28,7 +28,6 @@ class Writer
 
   public function write(Tag $tag)
   {
-    \tool::fprint("Writing ... " . get_called_class() . "@{$this->file->ftell()}");
     return $tag->save($this->file);
   }
 

@@ -4,16 +4,13 @@
 * @version $Id$
 */
 
-namespace
-{
-  // Plug the built-in debug logging.
-  if(!class_exists('\tool', false)) { final class tool { static function __callStatic($name, $args) {} } }
-}
 namespace AnrDaemon\Minecraft\NBT
-{
+
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 abstract class Tag
-implements \Serializable, \JsonSerializable
+implements NbtTag, \Serializable, \JsonSerializable
 {
   protected $id;
   public $name = null;
@@ -23,10 +20,12 @@ implements \Serializable, \JsonSerializable
     $this->id = get_called_class();
   }
 
+// NbtTag
+  abstract public static function readFrom(Reader $file);
+  abstract public static function createFrom(Reader $file);
+
   public function save(\SplFileObject $file)
   {
-    \tool::fprint("Saving ... " . get_called_class() . (isset($this->name) ? ":{$this->name}" : '') . "@{$file->ftell()}");
-
     return $file->fwrite(isset($this->name) ? Dictionary::mapName($this->id) . TAG_String::store($this->name) : '');
   }
 
@@ -38,5 +37,4 @@ implements \Serializable, \JsonSerializable
 // Serializable
   abstract public function serialize();
   abstract public function unserialize($blob);
-}
 }

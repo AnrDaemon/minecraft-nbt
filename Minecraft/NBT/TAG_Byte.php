@@ -6,16 +6,11 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use
-  AnrDaemon\Minecraft\Interfaces\NbtTag;
-
 final class TAG_Byte
 extends TAG_Value
-implements NbtTag
 {
   public static function readFrom(Reader $file)
   {
-    \tool::fprint("Reading ... " . get_called_class() . "::" . __FUNCTION__);
     return unpack('c', $file->fread(1))[1];
   }
 
@@ -23,10 +18,7 @@ implements NbtTag
   public static function store($value)
   {
     if($value < -128 || $value > 127)
-      throw new RangeException('Value is out of allowed range for given type.');
-
-    if(\tool::debug())
-      \tool::fprint("Storing " . get_called_class() . ":$value");
+      throw new \RangeException('Value is out of allowed range for given type.');
 
     return pack('c', (int)$value);
   }

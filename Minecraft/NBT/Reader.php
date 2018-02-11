@@ -6,13 +6,7 @@
 * @version $Id$
 */
 
-namespace
-{
-  // Plug the built-in debug logging.
-  if(!class_exists('\tool', false)) { final class tool { static function __callStatic($name, $args) {} } }
-}
 namespace AnrDaemon\Minecraft\NBT
-{
 
 if(version_compare(PHP_VERSION, '5.5.11', '<'))
   trigger_error('Requires SplFileObject::fread(). Upgrade your PHP.', E_USER_ERROR);
@@ -36,8 +30,6 @@ class Reader
   final public static function convert($format, $value)
   {
     $result = unpack($format, Dictionary::convert($value))[1];
-    if(\tool::debug())
-      \tool::fprint("Converted $format'" . bin2hex($value) . "' to $result");
     return $result;
   }
 
@@ -45,8 +37,6 @@ class Reader
   {
     if($length < 0)
       throw new \RuntimeException("Backward reads are not supported.");
-
-    \tool::fprint("Reading $length from " . get_called_class() . "::" . __FUNCTION__ . "@{$this->file->ftell()}");
 
     if($length)
     {
@@ -65,5 +55,4 @@ class Reader
 
     return $data;
   }
-}
 }

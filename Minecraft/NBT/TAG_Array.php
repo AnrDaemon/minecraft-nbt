@@ -15,7 +15,6 @@ implements \ArrayAccess, \Countable, \Iterator
 
   public function __construct($name = null, $content = array())
   {
-    \tool::fprint("Creating " . get_called_class() . (count($content) ? " with " . count($content) . " elements" : ''));
     parent::__construct();
     $this->name = $name;
     $this->content = $content ? (array)$content : array();

@@ -13,7 +13,6 @@ extends Tag
 
   public function __construct($name = null, $value = null)
   {
-    \tool::fprint("Creating " . get_called_class() . ":$name(" . (is_a($value, __CLASS__) ? $value->value : $value) . ")");
     parent::__construct();
     $this->name = $name;
     $this->value = is_a($value, __CLASS__) ? $value->value : $value;
@@ -21,7 +20,6 @@ extends Tag
 
   public static function createFrom(Reader $file)
   {
-    \tool::fprint("Reading ... " . get_called_class() . "::" . __FUNCTION__);
     return new static(TAG_String::readFrom($file), static::readFrom($file));
   }
 
