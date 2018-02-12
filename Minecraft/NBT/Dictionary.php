@@ -12,18 +12,7 @@ define('_IS_BE', unpack('v', pack('S', 1))[1] > 1);
 
 final class Dictionary
 {
-  private static $typeMap;
-  private static $nameMap;
-
-  public function __construct()
-  {
-    if(!isset(self::$typeMap))
-      self::init();
-  }
-
-  private static function init()
-  {
-    self::$typeMap = array(
+  private static $typeMap = array(
       "\x0" => __NAMESPACE__ . '\TAG_End',
       "\x1" => __NAMESPACE__ . '\TAG_Byte',
       "\x2" => __NAMESPACE__ . '\TAG_Short',
@@ -36,8 +25,12 @@ final class Dictionary
       "\x9" => __NAMESPACE__ . '\TAG_List',
       "\xA" => __NAMESPACE__ . '\TAG_Compound',
       "\xB" => __NAMESPACE__ . '\TAG_Int_Array',
-    );
+      "\xC" => __NAMESPACE__ . '\TAG_Long_Array',
+  );
+  private static $nameMap;
 
+  private static function init()
+  {
     self::$nameMap = array_flip(self::$typeMap);
   }
 
@@ -62,6 +55,12 @@ final class Dictionary
   public static function convert($value)
   {
     return _IS_BE ? $value : strrev($value);
+  }
+
+  public function __construct()
+  {
+    if(!isset(self::$nameMap))
+      self::init();
   }
 }
 
