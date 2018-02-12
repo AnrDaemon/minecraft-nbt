@@ -1,5 +1,5 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Compound class.
 *
 * @version $Id$
 */
@@ -33,25 +33,6 @@ extends TAG_Array
       $result += $tag->save($file);
     }
 
-
     return $result + $file->fwrite(Dictionary::mapName("TAG_End"));
-  }
-
-// JsonSerializable
-  public function jsonSerialize()
-  {
-    return '{}';
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
   }
 }

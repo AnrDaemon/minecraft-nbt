@@ -1,23 +1,26 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Array base class.
 *
 * @version $Id$
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
+
 abstract class TAG_Array
 extends Tag
-implements \ArrayAccess, \Countable, \Iterator
+implements NbtTag, \ArrayAccess, \Countable, \Iterator
 {
   protected $content;
   protected $position = 0;
 
-  public function __construct($name = null, $content = array())
+  public function __construct($name = null, array $content = array())
   {
     parent::__construct();
     $this->name = $name;
-    $this->content = $content ? (array)$content : array();
+    $this->content = $content ?: array();
   }
 
   public static function createFrom(Reader $file)
@@ -96,5 +99,26 @@ implements \ArrayAccess, \Countable, \Iterator
   public function valid()
   {
     return $this->position < sizeof($this->content);
+  }
+
+// JsonSerializable
+
+  public function jsonSerialize()
+  {
+    error_log(__METHOD__);
+    //return (object)[];
+  }
+
+// Serializable
+
+  public function serialize()
+  {
+    error_log(__METHOD__);
+  }
+
+  public function unserialize($blob)
+  {
+    error_log(__METHOD__);
+    error_log($blob);
   }
 }

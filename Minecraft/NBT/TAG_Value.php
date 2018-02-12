@@ -1,13 +1,17 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Value base class.
 *
 * @version $Id$
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
+
 abstract class TAG_Value
 extends Tag
+implements NbtTag
 {
   public $value = null;
 
@@ -17,6 +21,15 @@ extends Tag
     $this->name = $name;
     $this->value = is_a($value, __CLASS__) ? $value->value : $value;
   }
+
+  public function __toString()
+  {
+    return $this->value;
+  }
+
+// NbtTag
+
+  abstract public static function readFrom(Reader $file);
 
   public static function createFrom(Reader $file)
   {
@@ -34,5 +47,25 @@ extends Tag
   }
 
   abstract public static function store($value);
-  abstract public function __toString();
+
+// JsonSerializable
+
+  public function jsonSerialize()
+  {
+    error_log(__METHOD__);
+    //return (object)[];
+  }
+
+// Serializable
+
+  public function serialize()
+  {
+    error_log(__METHOD__);
+  }
+
+  public function unserialize($blob)
+  {
+    error_log(__METHOD__);
+    error_log($blob);
+  }
 }

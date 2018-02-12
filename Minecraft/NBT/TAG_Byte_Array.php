@@ -1,5 +1,5 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Byte_Array class.
 *
 * @version $Id$
 */
@@ -31,23 +31,5 @@ extends TAG_Array
     }
 
     return $result;
-  }
-
-// JsonSerializable
-  public function jsonSerialize()
-  {
-    error_log(__METHOD__);
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
   }
 }

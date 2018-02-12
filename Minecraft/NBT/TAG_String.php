@@ -1,5 +1,5 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_String class.
 *
 * @version $Id$
 */
@@ -15,35 +15,13 @@ extends TAG_Value
   }
 
 // TAG_Value
+
   public static function store($value)
   {
     $len = strlen($value);
     if($len < 0 || $len > 32767)
-      throw new \LengthException('Valid string length range is 0..32767.');
+      throw new \UnexpectedValueException('Valid string length range is 0..32767.');
 
     return TAG_Short::store($len) . $value;
-  }
-
-  public function __toString()
-  {
-    return $this->value;
-  }
-
-// JsonSerializable
-  public function jsonSerialize()
-  {
-    error_log(__METHOD__);
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
   }
 }

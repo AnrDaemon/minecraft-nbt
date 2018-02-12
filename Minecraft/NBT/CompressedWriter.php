@@ -1,5 +1,5 @@
 <?php
-/** Minecraft NBT writer class.
+/** Minecraft NBT compressed writer class.
 *
 *
 *

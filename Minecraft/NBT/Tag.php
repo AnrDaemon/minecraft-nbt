@@ -4,13 +4,13 @@
 * @version $Id$
 */
 
-namespace AnrDaemon\Minecraft\NBT
+namespace AnrDaemon\Minecraft\NBT;
 
 use
   AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 abstract class Tag
-implements NbtTag, \Serializable, \JsonSerializable
+implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
 {
   protected $id;
   public $name = null;
@@ -21,8 +21,9 @@ implements NbtTag, \Serializable, \JsonSerializable
   }
 
 // NbtTag
-  abstract public static function readFrom(Reader $file);
-  abstract public static function createFrom(Reader $file);
+
+// TODO:PHP7.2 abstract public static function readFrom(Reader $file);
+// TODO:PHP7.2 abstract public static function createFrom(Reader $file);
 
   public function save(\SplFileObject $file)
   {
@@ -32,9 +33,11 @@ implements NbtTag, \Serializable, \JsonSerializable
   abstract public function __debugInfo();
 
 // JsonSerializable
+
   abstract public function jsonSerialize();
 
 // Serializable
+
   abstract public function serialize();
   abstract public function unserialize($blob);
 }

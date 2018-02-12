@@ -1,5 +1,5 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Byte class.
 *
 * @version $Id$
 */
@@ -15,34 +15,12 @@ extends TAG_Value
   }
 
 // TAG_Value
+
   public static function store($value)
   {
     if($value < -128 || $value > 127)
-      throw new \RangeException('Value is out of allowed range for given type.');
+      throw new \RangeException('Value is outside allowed range for a given type.');
 
     return pack('c', (int)$value);
-  }
-
-  public function __toString()
-  {
-    return $this->value;
-  }
-
-// JsonSerializable
-  public function jsonSerialize()
-  {
-    error_log(__METHOD__);
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
   }
 }

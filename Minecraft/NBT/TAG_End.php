@@ -1,13 +1,17 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_End class.
 *
 * @version $Id$
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
+
 final class TAG_End
 extends Tag
+implements NbtTag
 {
   public static function readFrom(Reader $file)
   {
@@ -31,16 +35,18 @@ extends Tag
 
   public function __debugInfo()
   {
-    return [];
+    return;
   }
 
 // JsonSerializable
+
   public function jsonSerialize()
   {
     error_log(__METHOD__);
   }
 
 // Serializable
+
   public function serialize()
   {
     error_log(__METHOD__);

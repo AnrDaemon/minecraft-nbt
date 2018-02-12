@@ -1,14 +1,12 @@
 <?php
 /** Minecraft NBT reader class.
 *
-*
-*
 * @version $Id$
 */
 
-namespace AnrDaemon\Minecraft\NBT
+namespace AnrDaemon\Minecraft\NBT;
 
-if(version_compare(PHP_VERSION, '5.5.11', '<'))
+if(!method_exists('SplFileObject', 'fread'))
   trigger_error('Requires SplFileObject::fread(). Upgrade your PHP.', E_USER_ERROR);
 
 class Reader
@@ -29,8 +27,8 @@ class Reader
 // unpack() wrapper, because damned "machine byte order"
   final public static function convert($format, $value)
   {
-    $result = unpack($format, Dictionary::convert($value))[1];
-    return $result;
+    $result = unpack($format, Dictionary::convert($value));
+    return $result[1];
   }
 
   public function fread($length)

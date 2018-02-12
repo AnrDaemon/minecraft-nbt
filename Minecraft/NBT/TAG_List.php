@@ -1,5 +1,5 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_List class.
 *
 * @version $Id$
 */
@@ -75,23 +75,5 @@ extends TAG_Array
       return $this->type;
 
     throw new \LogicException("No such property '$name' or it is not readable.");
-  }
-
-// JsonSerializable
-  public function jsonSerialize()
-  {
-    error_log(__METHOD__);
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
   }
 }
