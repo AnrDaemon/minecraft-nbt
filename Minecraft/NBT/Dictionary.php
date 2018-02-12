@@ -13,10 +13,12 @@ define('_IS_BE', unpack('v', pack('S', 1))[1] > 1);
 final class Dictionary
 {
   private static $typeMap;
+  private static $nameMap;
 
-  private function __construct()
+  public function __construct()
   {
-    throw new \BadMethodCallException('May not initialize tools class.');
+    if(!isset(self::$typeMap))
+      self::init();
   }
 
   private static function init()
@@ -33,32 +35,25 @@ final class Dictionary
       "\x8" => __NAMESPACE__ . '\TAG_String',
       "\x9" => __NAMESPACE__ . '\TAG_List',
       "\xA" => __NAMESPACE__ . '\TAG_Compound',
-      "\xB" => __NAMESPACE__ . '\TAG_Int_Array'
+      "\xB" => __NAMESPACE__ . '\TAG_Int_Array',
     );
+
+    self::$nameMap = array_flip(self::$typeMap);
   }
 
   public static function mapType($type)
   {
-    if(!is_array(self::$typeMap))
-      self::init();
-
     if(!isset(self::$typeMap[$type]))
-      throw new \OutOfBoundsException("Unknown tag type " . ord($type));
+      throw new \OutOfBoundsException("Unknown tag type 0x" . bin2hex($type));
 
     return self::$typeMap[$type];
   }
 
   public static function mapName($name)
   {
-    if(!is_array(self::$typeMap))
-      self::init();
-
-    $tag = array_search($name, self::$typeMap);
-    if($tag === false)
-      $tag = array_search(__NAMESPACE__ . "\\$name", self::$typeMap);
-
-    if($tag === false)
-      throw new \OutOfBoundsException("Unknown tag name " . ord($type));
+    $tag = self::$nameMap[$name] ?? self::$nameMap[__NAMESPACE__ . "\\$name"] ?? null;
+    if(!isset($tag))
+      throw new \OutOfBoundsException("Unknown tag name '$name'");
 
     return $tag;
   }
@@ -69,3 +64,5 @@ final class Dictionary
     return _IS_BE ? $value : strrev($value);
   }
 }
+
+return new Dictionary;

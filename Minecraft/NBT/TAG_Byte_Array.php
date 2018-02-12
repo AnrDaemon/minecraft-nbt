@@ -24,7 +24,6 @@ extends TAG_Array
   {
     $result = parent::save($file) + $file->fwrite(TAG_Int::store(count($this->content)));
 
-    ksort($this->content);
     foreach($this->content as $value)
     {
       $result += $file->fwrite(TAG_Byte::store($value));
