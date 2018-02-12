@@ -23,18 +23,22 @@ implements NbtTag, \ArrayAccess, \Countable, \Iterator
     $this->content = $content ?: array();
   }
 
-  public static function createFrom(Reader $file)
-  {
-    $self = new static(TAG_String::readFrom($file));
-    return static::readFrom($file, $self);
-  }
+// Tag
 
   public function __debugInfo()
   {
     return ['name' => $this->name, 'content' => $this->content];
   }
 
+// NbtTag
+
   abstract public static function readFrom(Reader $file, TAG_Array $into = null);
+
+  public static function createFrom(Reader $file)
+  {
+    $self = new static(TAG_String::readFrom($file));
+    return static::readFrom($file, $self);
+  }
 
 // ArrayAccess
 

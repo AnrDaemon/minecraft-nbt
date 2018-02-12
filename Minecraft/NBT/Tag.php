@@ -20,6 +20,8 @@ implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
     $this->id = get_called_class();
   }
 
+  abstract public function __debugInfo();
+
 // NbtTag
 
 // TODO:PHP7.2 abstract public static function readFrom(Reader $file);
@@ -29,8 +31,6 @@ implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
   {
     return $file->fwrite(isset($this->name) ? Dictionary::mapName($this->id) . TAG_String::store($this->name) : '');
   }
-
-  abstract public function __debugInfo();
 
 // JsonSerializable
 

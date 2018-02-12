@@ -12,15 +12,17 @@ if(\strlen(\pack('G', 1.2)) <> 4)
 final class TAG_Float
 extends TAG_Value
 {
-  public static function readFrom(Reader $file)
-  {
-    return unpack('G', $file->fread(4))[1];
-  }
-
 // TAG_Value
 
   public static function store($value)
   {
     return pack('G', $value);
+  }
+
+// NbtTag
+
+  public static function readFrom(Reader $file)
+  {
+    return unpack('G', $file->fread(4))[1];
   }
 }

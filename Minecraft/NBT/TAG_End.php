@@ -13,6 +13,20 @@ final class TAG_End
 extends Tag
 implements NbtTag
 {
+  public function __toString()
+  {
+    return;
+  }
+
+// Tag
+
+  public function __debugInfo()
+  {
+    return;
+  }
+
+// NbtTag
+
   public static function readFrom(Reader $file)
   {
     throw new \BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
@@ -26,16 +40,6 @@ implements NbtTag
   public function save(\SplFileObject $file)
   {
     return $file->fwrite(Dictionary::mapName($this->id));
-  }
-
-  public function __toString()
-  {
-    return;
-  }
-
-  public function __debugInfo()
-  {
-    return;
   }
 
 // JsonSerializable

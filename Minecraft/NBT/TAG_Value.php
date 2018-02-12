@@ -15,6 +15,8 @@ implements NbtTag
 {
   public $value = null;
 
+  abstract public static function store($value);
+
   public function __construct($name = null, $value = null)
   {
     parent::__construct();
@@ -25,6 +27,13 @@ implements NbtTag
   public function __toString()
   {
     return $this->value;
+  }
+
+// Tag
+
+  public function __debugInfo()
+  {
+    return ['name' => $this->name, 'value' => $this->value];
   }
 
 // NbtTag
@@ -40,13 +49,6 @@ implements NbtTag
   {
     return parent::save($file) + $file->fwrite(static::store($this->value));
   }
-
-  public function __debugInfo()
-  {
-    return ['name' => $this->name, 'value' => $this->value];
-  }
-
-  abstract public static function store($value);
 
 // JsonSerializable
 

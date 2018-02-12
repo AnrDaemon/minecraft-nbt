@@ -11,6 +11,28 @@ extends TAG_Array
 {
   protected $type;
 
+  public function __set($name, $value)
+  {
+    if($name == 'type')
+      if(!isset($this->type))
+      {
+        $this->type = $value;
+        return;
+      }
+
+    throw new \LogicException("No such property '$name' or it is not writable.");
+  }
+
+  public function __get($name)
+  {
+    if($name == 'type')
+      return $this->type;
+
+    throw new \LogicException("No such property '$name' or it is not readable.");
+  }
+
+// TAG_Array/NbtTag
+
   public static function readFrom(Reader $file, TAG_Array $into = null)
   {
     $self = $into ?: new static();
@@ -55,25 +77,5 @@ extends TAG_Array
     }
 
     return $result;
-  }
-
-  public function __set($name, $value)
-  {
-    if($name == 'type')
-      if(!isset($this->type))
-      {
-        $this->type = $value;
-        return;
-      }
-
-    throw new \LogicException("No such property '$name' or it is not writable.");
-  }
-
-  public function __get($name)
-  {
-    if($name == 'type')
-      return $this->type;
-
-    throw new \LogicException("No such property '$name' or it is not readable.");
   }
 }

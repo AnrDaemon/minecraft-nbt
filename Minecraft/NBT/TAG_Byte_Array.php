@@ -9,6 +9,8 @@ namespace AnrDaemon\Minecraft\NBT;
 final class TAG_Byte_Array
 extends TAG_Array
 {
+// TAG_Array/NbtTag
+
   public static function readFrom(Reader $file, TAG_Array $into = null)
   {
     $self = $into ?: new static();

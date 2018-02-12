@@ -9,11 +9,6 @@ namespace AnrDaemon\Minecraft\NBT;
 final class TAG_Int
 extends TAG_Value
 {
-  public static function readFrom(Reader $file)
-  {
-    return Reader::convert('l', $file->fread(4));
-  }
-
 // TAG_Value
 
   public static function store($value)
@@ -22,5 +17,12 @@ extends TAG_Value
       throw new \RangeException('Value is outside allowed range for a given type.');
 
     return pack('N', (int)$value);
+  }
+
+// NbtTag
+
+  public static function readFrom(Reader $file)
+  {
+    return Reader::convert('l', $file->fread(4));
   }
 }

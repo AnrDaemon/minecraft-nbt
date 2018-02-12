@@ -9,11 +9,6 @@ namespace AnrDaemon\Minecraft\NBT;
 final class TAG_String
 extends TAG_Value
 {
-  public static function readFrom(Reader $file)
-  {
-    return (string)$file->fread(TAG_Short::readFrom($file));
-  }
-
 // TAG_Value
 
   public static function store($value)
@@ -23,5 +18,12 @@ extends TAG_Value
       throw new \UnexpectedValueException('Valid string length range is 0..32767.');
 
     return TAG_Short::store($len) . $value;
+  }
+
+// NbtTag
+
+  public static function readFrom(Reader $file)
+  {
+    return (string)$file->fread(TAG_Short::readFrom($file));
   }
 }
