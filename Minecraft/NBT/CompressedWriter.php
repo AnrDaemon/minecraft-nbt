@@ -13,7 +13,7 @@ extends Writer
 {
   public function write(Tag $tag)
   {
-    $tmp = new \SplFileObject('php://memory', 'wb+');
+    $tmp = new \SplFileObject('php://temp', 'wb+');
     $tag->save($tmp);
     $pos = $tmp->ftell();
     $tmp->fseek(0);
