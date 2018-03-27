@@ -13,10 +13,6 @@ extends Writer
 {
   public function write(Tag $tag)
   {
-    $tmp = new \SplFileObject('php://temp', 'wb+');
-    $tag->save($tmp);
-    $pos = $tmp->ftell();
-    $tmp->fseek(0);
-    return $this->file->fwrite(gzencode($tmp->fread($pos), 9, FORCE_GZIP));
+    return $this->file->fwrite(gzencode($tag->nbtSerialize(), 9, FORCE_GZIP));
   }
 }

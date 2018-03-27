@@ -6,35 +6,44 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
+
 final class TAG_Compound
 extends TAG_Array
 {
-// TAG_Array/NbtTag
+// TAG_Array
 
-  public static function readFrom(Reader $file, TAG_Array $into = null)
+  protected function validate($value)
+  {
+    if(!is_subclass_of($value, __NAMESPACE__ . '\\Tag'))
+      throw new \InvalidArgumentException("Elements of the list must be NBT tags. (And not 'End' tags!)");
+
+    if(!isset($value->name))
+      throw new \InvalidArgumentException("Elements of the list must have a name. Even if it's an empty name.");
+
+    return $value;
+  }
+
+  protected function store()
+  {
+    foreach($this->content as $value)
+      yield $this->validate($value)->nbtSerialize();
+
+    yield Dictionary::mapName('TAG_End');
+  }
+
+// NbtTag
+
+  public static function readFrom(NbtSource $file, TAG_Array $into = null)
   {
     $self = $into ?: new static();
-    while($tag = $file->read())
+    while($tag = Tag::createFrom($file))
       if($tag instanceof TAG_End)
         break;
       else
         $self[] = $tag;
 
     return $self;
-  }
-
-  public function save(\SplFileObject $file)
-  {
-    $result = parent::save($file);
-
-    foreach($this->content as $tag)
-    { // TODO: Check if tag is TAG_End at insetion times.
-      if($tag instanceof TAG_End)
-        break;
-
-      $result += $tag->save($file);
-    }
-
-    return $result + $file->fwrite(Dictionary::mapName("TAG_End"));
   }
 }

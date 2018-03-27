@@ -1,14 +1,12 @@
 <?php
 /** Minecraft NBT writer class.
 *
-*
-*
 * @version $Id$
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
-if(version_compare(PHP_VERSION, '5.1', '<'))
+if(!method_exists('SplFileObject', 'fwrite'))
   trigger_error('Requires SplFileObject::fwrite(). Upgrade your PHP.', E_USER_ERROR);
 
 class Writer
@@ -28,12 +26,6 @@ class Writer
 
   public function write(Tag $tag)
   {
-    return $tag->save($this->file);
-  }
-
-// pack() wrapper, because damned "machine byte order"
-  final public static function convert($format, $value)
-  {
-    return Dictionary::convert(pack($format, $value));
+    return $this->file->fwrite($tag->nbtSerialize());
   }
 }

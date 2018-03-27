@@ -9,7 +9,11 @@ namespace AnrDaemon\Minecraft\NBT;
 if(!method_exists('SplFileObject', 'fread'))
   trigger_error('Requires SplFileObject::fread(). Upgrade your PHP.', E_USER_ERROR);
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
+
 class Reader
+implements NbtSource
 {
   protected $file;
 
@@ -20,19 +24,12 @@ class Reader
 
   final public function read()
   {
-    $_type = Dictionary::mapType($this->fread(1));
-    return $_type::createFrom($this);
-  }
-
-// unpack() wrapper, because damned "machine byte order"
-  final public static function convert($format, $value)
-  {
-    $result = unpack($format, Dictionary::convert($value));
-    return $result[1];
+    return Tag::createFrom($this);
   }
 
   public function fread($length)
   {
+    $length = (int)$length;
     if($length < 0)
       throw new \RuntimeException("Backward reads are not supported.");
 

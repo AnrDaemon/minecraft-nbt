@@ -7,14 +7,17 @@
 namespace AnrDaemon\Minecraft\NBT;
 
 use
-  AnrDaemon\Minecraft\Interfaces\NbtTag;
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
 
 abstract class TAG_Array
 extends Tag
-implements NbtTag, \ArrayAccess, \Countable, \Iterator
+implements \ArrayAccess, \Countable, \Iterator
 {
   protected $content = array();
   protected $position = 0;
+
+  abstract protected function validate($value);
+  abstract protected function store();
 
   public function __construct($name = null, array $content = array())
   {
@@ -34,18 +37,26 @@ implements NbtTag, \ArrayAccess, \Countable, \Iterator
 
 // NbtTag
 
-  abstract public static function readFrom(Reader $file, TAG_Array $into = null);
-
-  public static function createFrom(Reader $file)
+  public static function createFrom(NbtSource $file)
   {
     $self = new static(TAG_String::readFrom($file));
     return static::readFrom($file, $self);
+  }
+
+  public function nbtSerialize()
+  {
+    $result = parent::nbtSerialize();
+    foreach($this->store() as $value)
+      $result .= $value;
+
+    return $result;
   }
 
 // ArrayAccess
 
   public function offsetSet($offset, $value)
   {
+    $value = $this->validate($value);
     if(is_null($offset))
       $this->content[] = $value;
     else

@@ -51,10 +51,15 @@ final class Dictionary
     return $tag;
   }
 
-// unpack() wrapper, because damned "machine byte order"
   public static function convert($value)
   {
     return _IS_BE ? $value : strrev($value);
+  }
+
+// unpack() wrapper, because damned "machine byte order"
+  public static function unpack($format, $value)
+  {
+    return unpack($format, static::convert($value))[1];
   }
 
   public function __construct()

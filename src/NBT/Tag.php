@@ -7,10 +7,11 @@
 namespace AnrDaemon\Minecraft\NBT;
 
 use
+  AnrDaemon\Minecraft\Interfaces\NbtSource,
   AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 abstract class Tag
-implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
+implements NbtTag, \JsonSerializable, \Serializable
 {
   public $name = null;
 
@@ -23,12 +24,17 @@ implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
 
 // NbtTag
 
-// TODO:PHP7.2 abstract public static function readFrom(Reader $file);
-// TODO:PHP7.2 abstract public static function createFrom(Reader $file);
+  abstract public static function readFrom(NbtSource $file);
 
-  public function save(\SplFileObject $file)
+  public static function createFrom(NbtSource $file)
   {
-    return $file->fwrite(isset($this->name) ? Dictionary::mapName(get_called_class()) . TAG_String::store($this->name) : '');
+    $_type = Dictionary::mapType($file->fread(1));
+    return $_type::createFrom($file);
+  }
+
+  public function nbtSerialize()
+  {
+    return isset($this->name) ? Dictionary::mapName(get_called_class()) . TAG_String::store($this->name) : '';
   }
 
 // JsonSerializable

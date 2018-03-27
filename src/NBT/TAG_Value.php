@@ -7,11 +7,10 @@
 namespace AnrDaemon\Minecraft\NBT;
 
 use
-  AnrDaemon\Minecraft\Interfaces\NbtTag;
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
 
 abstract class TAG_Value
 extends Tag
-implements NbtTag
 {
   public $value = null;
 
@@ -37,16 +36,16 @@ implements NbtTag
 
 // NbtTag
 
-  abstract public static function readFrom(Reader $file);
+//  abstract public static function readFrom(NbtSource $file);
 
-  public static function createFrom(Reader $file)
+  public static function createFrom(NbtSource $file)
   {
     return new static(TAG_String::readFrom($file), static::readFrom($file));
   }
 
-  public function save(\SplFileObject $file)
+  public function nbtSerialize()
   {
-    return parent::save($file) + $file->fwrite(static::store($this->value));
+    return parent::nbtSerialize() . static::store($this->value);
   }
 
 // JsonSerializable

@@ -6,6 +6,9 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
+
 final class TAG_Long
 extends TAG_Value
 {
@@ -18,8 +21,8 @@ extends TAG_Value
 
 // NbtTag
 
-  public static function readFrom(Reader $file)
+  public static function readFrom(NbtSource $file)
   {
-    return new static(null, Reader::convert('q', $file->fread(8)));
+    return new static(null, Dictionary::unpack('q', $file->fread(8)));
   }
 }

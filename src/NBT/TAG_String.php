@@ -6,6 +6,9 @@
 
 namespace AnrDaemon\Minecraft\NBT;
 
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
+
 final class TAG_String
 extends TAG_Value
 {
@@ -22,7 +25,7 @@ extends TAG_Value
 
 // NbtTag
 
-  public static function readFrom(Reader $file)
+  public static function readFrom(NbtSource $file)
   {
     return new static(null, (string)$file->fread(TAG_Short::readFrom($file)->value));
   }

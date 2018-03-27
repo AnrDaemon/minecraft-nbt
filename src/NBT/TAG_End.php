@@ -7,6 +7,7 @@
 namespace AnrDaemon\Minecraft\NBT;
 
 use
+  AnrDaemon\Minecraft\Interfaces\NbtSource,
   AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_End
@@ -19,18 +20,18 @@ implements NbtTag
 
 // NbtTag
 
-  public static function readFrom(Reader $file)
+  public static function readFrom(NbtSource $file)
   {
     throw new \BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
   }
 
-  public static function createFrom(Reader $file)
+  public static function createFrom(NbtSource $file)
   {
     return new static();
   }
 
-  public function save(\SplFileObject $file)
+  public function nbtSerialize()
   {
-    return $file->fwrite(Dictionary::mapName(get_called_class()));
+    return Dictionary::mapName(get_called_class());
   }
 }
