@@ -13,13 +13,16 @@ abstract class TAG_Array
 extends Tag
 implements NbtTag, \ArrayAccess, \Countable, \Iterator
 {
-  protected $content;
+  protected $content = array();
   protected $position = 0;
 
   public function __construct($name = null, array $content = array())
   {
     $this->name = isset($name) ? (string)$name : null;
-    $this->content = $content ?: array();
+    foreach($content as $value)
+    {
+      $this[] = $value;
+    }
   }
 
 // Tag
