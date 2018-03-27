@@ -1,3 +1,0 @@
-TAG_List: 
-  Fix elements type on first assignment.
-  Throw InvalidArgumentException if types do not match.

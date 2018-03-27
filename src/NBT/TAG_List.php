@@ -11,27 +11,7 @@ extends TAG_Array
 {
   protected $type;
 
-  public function __set($name, $value)
-  {
-    if($name == 'type')
-      if(!isset($this->type))
-      {
-        $this->type = $value;
-        return;
-      }
-
-    throw new \LogicException("No such property '$name' or it is not writable.");
-  }
-
-  public function __get($name)
-  {
-    if($name == 'type')
-      return $this->type;
-
-    throw new \LogicException("No such property '$name' or it is not readable.");
-  }
-
-// TAG_Array/NbtTag
+// NbtTag
 
   public static function readFrom(Reader $file, TAG_Array $into = null)
   {
@@ -77,5 +57,24 @@ extends TAG_Array
     }
 
     return $result;
+  }
+
+// ArrayAccess / TAG_Array override
+
+  public function offsetSet($offset, $value)
+  {
+    if(!is_subclass_of($value, __NAMESPACE__ . '\\Tag'))
+      throw new \InvalidArgumentException("Elements of the list must be NBT tags. (And not 'End' tags!)");
+
+    if(!isset($this->type))
+      $this->type = get_class($value);
+
+    if(get_class($value) !== $this->type)
+      throw new \InvalidArgumentException('All elements of the list must be of the same type.');
+
+    if(is_null($offset))
+      $this->content[] = $value;
+    else
+      $this->content[$offset] = $value;
   }
 }
