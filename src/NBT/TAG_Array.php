@@ -18,7 +18,7 @@ implements NbtTag, \ArrayAccess, \Countable, \Iterator
 
   public function __construct($name = null, array $content = array())
   {
-    $this->name = $name;
+    $this->name = isset($name) ? (string)$name : null;
     $this->content = $content ?: array();
   }
 

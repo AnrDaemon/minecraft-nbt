@@ -37,7 +37,7 @@ extends TAG_Array
   {
     $self = $into ?: new static();
     $type = $self->type = Dictionary::mapType($file->fread(1));
-    $size = TAG_Int::readFrom($file);
+    $size = TAG_Int::readFrom($file)->value;
 
     for($i = 0; $i < $size; $i++)
       $self[] = $type::readFrom($file);

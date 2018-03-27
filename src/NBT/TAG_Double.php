@@ -23,6 +23,6 @@ extends TAG_Value
 
   public static function readFrom(Reader $file)
   {
-    return unpack('E', $file->fread(8))[1];
+    return new static(null, unpack('E', $file->fread(8))[1]);
   }
 }

@@ -14,10 +14,10 @@ extends TAG_Array
   public static function readFrom(Reader $file, TAG_Array $into = null)
   {
     $self = $into ?: new static();
-    $size = TAG_Int::readFrom($file);
+    $size = TAG_Int::readFrom($file)->value;
 
     for($i = 0; $i < $size; $i++)
-      $self[] = TAG_Long::readFrom($file);
+      $self[] = TAG_Long::readFrom($file)->value;
 
     return $self;
   }

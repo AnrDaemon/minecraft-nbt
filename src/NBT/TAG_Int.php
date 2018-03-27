@@ -23,6 +23,6 @@ extends TAG_Value
 
   public static function readFrom(Reader $file)
   {
-    return Reader::convert('l', $file->fread(4));
+    return new static(null, Reader::convert('l', $file->fread(4)));
   }
 }

@@ -24,6 +24,6 @@ extends TAG_Value
 
   public static function readFrom(Reader $file)
   {
-    return (string)$file->fread(TAG_Short::readFrom($file));
+    return new static(null, (string)$file->fread(TAG_Short::readFrom($file)->value));
   }
 }

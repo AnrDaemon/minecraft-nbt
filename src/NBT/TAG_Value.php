@@ -19,7 +19,7 @@ implements NbtTag
 
   public function __construct($name = null, $value = null)
   {
-    $this->name = $name;
+    $this->name = isset($name) ? (string)$name : null;
     $this->value = is_a($value, __CLASS__) ? $value->value : $value;
   }
 
