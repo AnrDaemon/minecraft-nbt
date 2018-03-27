@@ -130,12 +130,14 @@ implements \ArrayAccess, \Countable, \Iterator
 
   public function serialize()
   {
-    error_log(__METHOD__);
+    return serialize(['name' => $this->name, 'content' => $this->content]);
   }
 
   public function unserialize($blob)
   {
-    error_log(__METHOD__);
-    error_log($blob);
+    $data = unserialize($blob);
+    $self = new static($data['name'], $data['content']);
+    $this->name = $self->name;
+    $this->content = $self->content;
   }
 }

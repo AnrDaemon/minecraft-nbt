@@ -36,8 +36,6 @@ extends Tag
 
 // NbtTag
 
-//  abstract public static function readFrom(NbtSource $file);
-
   public static function createFrom(NbtSource $file)
   {
     return new static(TAG_String::readFrom($file), static::readFrom($file));
@@ -60,12 +58,14 @@ extends Tag
 
   public function serialize()
   {
-    error_log(__METHOD__);
+    return serialize(['name' => $this->name, 'value' => $this->value]);
   }
 
   public function unserialize($blob)
   {
-    error_log(__METHOD__);
-    error_log($blob);
+    $data = unserialize($blob);
+    $self = new static($data['name'], $data['value']);
+    $this->name = $self->name;
+    $this->value = $self->value;
   }
 }
