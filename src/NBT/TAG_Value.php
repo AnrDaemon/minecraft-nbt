@@ -19,7 +19,6 @@ implements NbtTag
 
   public function __construct($name = null, $value = null)
   {
-    parent::__construct();
     $this->name = $name;
     $this->value = is_a($value, __CLASS__) ? $value->value : $value;
   }

@@ -10,17 +10,9 @@ use
   AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_End
-extends Tag
 implements NbtTag
 {
   public function __toString()
-  {
-    return;
-  }
-
-// Tag
-
-  public function __debugInfo()
   {
     return;
   }
@@ -39,26 +31,6 @@ implements NbtTag
 
   public function save(\SplFileObject $file)
   {
-    return $file->fwrite(Dictionary::mapName($this->id));
-  }
-
-// JsonSerializable
-
-  public function jsonSerialize()
-  {
-    error_log(__METHOD__);
-  }
-
-// Serializable
-
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
+    return $file->fwrite(Dictionary::mapName(get_called_class()));
   }
 }

@@ -12,13 +12,7 @@ use
 abstract class Tag
 implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
 {
-  protected $id;
   public $name = null;
-
-  public function __construct()
-  {
-    $this->id = get_called_class();
-  }
 
   abstract public function __debugInfo();
 
@@ -29,7 +23,7 @@ implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
 
   public function save(\SplFileObject $file)
   {
-    return $file->fwrite(isset($this->name) ? Dictionary::mapName($this->id) . TAG_String::store($this->name) : '');
+    return $file->fwrite(isset($this->name) ? Dictionary::mapName(get_called_class()) . TAG_String::store($this->name) : '');
   }
 
 // JsonSerializable
