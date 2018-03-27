@@ -16,6 +16,11 @@ implements /*TODO:PHP7.2 NbtTag, */\JsonSerializable, \Serializable
 
   abstract public function __debugInfo();
 
+  public function __construct($name = null)
+  {
+    $this->name = isset($name) ? (string)$name : null;
+  }
+
 // NbtTag
 
 // TODO:PHP7.2 abstract public static function readFrom(Reader $file);

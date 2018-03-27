@@ -18,7 +18,7 @@ implements NbtTag, \ArrayAccess, \Countable, \Iterator
 
   public function __construct($name = null, array $content = array())
   {
-    $this->name = isset($name) ? (string)$name : null;
+    parent::__construct($name);
     foreach($content as $value)
     {
       $this[] = $value;
@@ -83,7 +83,7 @@ implements NbtTag, \ArrayAccess, \Countable, \Iterator
 
   public function key()
   {
-    return $this->valid() ? key($this->content) : null;
+    return key($this->content);
   }
 
   public function next()
@@ -104,7 +104,7 @@ implements NbtTag, \ArrayAccess, \Countable, \Iterator
 
   public function valid()
   {
-    return $this->position < sizeof($this->content);
+    return $this->position < count($this->content);
   }
 
 // JsonSerializable

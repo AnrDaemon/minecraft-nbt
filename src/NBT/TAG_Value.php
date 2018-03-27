@@ -19,8 +19,8 @@ implements NbtTag
 
   public function __construct($name = null, $value = null)
   {
-    $this->name = isset($name) ? (string)$name : null;
-    $this->value = is_a($value, __CLASS__) ? $value->value : $value;
+    parent::__construct($name);
+    $this->value = is_subclass_of($value, __CLASS__) ? $value->value : $value;
   }
 
   public function __toString()
