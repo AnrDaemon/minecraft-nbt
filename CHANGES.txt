@@ -1,0 +1,201 @@
+------------------------------------------------------------------------
+r282 | anrdaemon | 2018-03-27 23:19:29 +0300 (Tue, 27 Mar 2018) | 2 lines
+
++ \Serializable interface implementation for NBT\Tag descendants.
+
+------------------------------------------------------------------------
+r280 | anrdaemon | 2018-03-27 19:05:51 +0300 (Tue, 27 Mar 2018) | 7 lines
+
+* Resolve reader mess, reduce stream provider to a single ::fread() method.
++ Add NbtSource provider interface.
+* Start tree parsing from the Tag head.
+* Use stricter validation for various tags both on load and save.
+* Do all parsing conversion in Dictionary.
+* Use forward NBT serialization.
+
+------------------------------------------------------------------------
+r279 | anrdaemon | 2018-03-27 09:43:02 +0300 (Tue, 27 Mar 2018) | 3 lines
+
+* Reinstate common parent constructor.
+* Simplify iterator key handling.
+
+------------------------------------------------------------------------
+r278 | anrdaemon | 2018-03-27 09:07:14 +0300 (Tue, 27 Mar 2018) | 2 lines
+
+* Set TAG_List type by the first assignment.
+
+------------------------------------------------------------------------
+r277 | anrdaemon | 2018-03-27 08:51:16 +0300 (Tue, 27 Mar 2018) | 2 lines
+
+* Tweak TAG_Array constructor to use defined assignment.
+
+------------------------------------------------------------------------
+r276 | anrdaemon | 2018-03-27 08:04:29 +0300 (Tue, 27 Mar 2018) | 3 lines
+
+* NbtTag::readFrom() returns value tags (tags with null names) instead of raw values for simple tag types.
+  Makes it consistent with complex tags.
+
+------------------------------------------------------------------------
+r275 | anrdaemon | 2018-03-27 07:12:43 +0300 (Tue, 27 Mar 2018) | 4 lines
+
+- Unbind TAG_End from Tag. They are not related.
+- Removed bogus Tag constructor and all references to its works.
+* Fixed TAG_Array constructor declaration.
+
+------------------------------------------------------------------------
+r273 | anrdaemon | 2018-03-25 19:39:16 +0300 (Sun, 25 Mar 2018) | 2 lines
+
+* Fix ignore list on root directory.
+
+------------------------------------------------------------------------
+r272 | anrdaemon | 2018-03-25 19:39:16 +0300 (Sun, 25 Mar 2018) | 2 lines
+
+= Standardize files layout.
+
+------------------------------------------------------------------------
+r271 | anrdaemon | 2018-03-25 19:17:22 +0300 (Sun, 25 Mar 2018) | 2 lines
+
+* Move and update bootstrap autoloader.
+
+------------------------------------------------------------------------
+r263 | anrdaemon | 2018-02-21 06:42:21 +0300 (Wed, 21 Feb 2018) | 4 lines
+
+* Use php://temp instead of php://memory.
+  Even hough an average compressed chunk is way less than 2MB,
+  safety is safety and data loss is not safe.
+
+------------------------------------------------------------------------
+r261 | anrdaemon | 2018-02-12 06:26:29 +0300 (Mon, 12 Feb 2018) | 3 lines
+
+* Use fully static initial dictionary map.
++ Add 19133 version support.
+
+------------------------------------------------------------------------
+r260 | anrdaemon | 2018-02-12 06:18:01 +0300 (Mon, 12 Feb 2018) | 2 lines
+
+* Reorder tags' methods for clarity.
+
+------------------------------------------------------------------------
+r259 | anrdaemon | 2018-02-12 06:08:53 +0300 (Mon, 12 Feb 2018) | 4 lines
+
++ Self-init Dictionary. Reduce runtime conditional checks.
+* Fix TAG_Array::__construct() prototype.
+- Remove unconditional lists sorting.
+
+------------------------------------------------------------------------
+r258 | anrdaemon | 2018-02-12 05:51:25 +0300 (Mon, 12 Feb 2018) | 3 lines
+
+- Heavy classes cleanup.
+* Take advantage of new pack() codes.
+
+------------------------------------------------------------------------
+r257 | anrdaemon | 2018-02-12 04:57:19 +0300 (Mon, 12 Feb 2018) | 3 lines
+
+* Update license file with original unmodified version.
+* Update composer requirements.
+
+------------------------------------------------------------------------
+r256 | anrdaemon | 2018-02-11 07:01:12 +0300 (Sun, 11 Feb 2018) | 3 lines
+
+- Remove ad hoc debug code.
+- Remove unnecessary NbtTag interface references.
+
+------------------------------------------------------------------------
+r255 | anrdaemon | 2018-02-11 06:07:13 +0300 (Sun, 11 Feb 2018) | 3 lines
+
+* Directly reference classes from root namespace.
+* Tweak entry formatting.
+
+------------------------------------------------------------------------
+r254 | anrdaemon | 2018-02-11 06:03:50 +0300 (Sun, 11 Feb 2018) | 3 lines
+
++ README
+* Alias Subversion trunk.
+
+------------------------------------------------------------------------
+r249 | anrdaemon | 2017-12-06 00:21:51 +0300 (Wed, 06 Dec 2017) | 2 lines
+
+Pin todo.
+
+------------------------------------------------------------------------
+r246 | anrdaemon | 2017-12-06 00:04:15 +0300 (Wed, 06 Dec 2017) | 2 lines
+
+Layout.
+
+------------------------------------------------------------------------
+r193 | anrdaemon | 2016-07-21 04:58:39 +0300 (Thu, 21 Jul 2016) | 2 lines
+
++ License.
+
+------------------------------------------------------------------------
+r190 | anrdaemon | 2016-07-20 00:45:04 +0300 (Wed, 20 Jul 2016) | 2 lines
+
++ Plug another debug hole.
+
+------------------------------------------------------------------------
+r189 | anrdaemon | 2016-07-19 23:38:29 +0300 (Tue, 19 Jul 2016) | 2 lines
+
++ Plug the built-in debug logging the right way.
+
+------------------------------------------------------------------------
+r188 | anrdaemon | 2016-07-19 23:03:31 +0300 (Tue, 19 Jul 2016) | 2 lines
+
++ Fix the loader for good.
+
+------------------------------------------------------------------------
+r187 | anrdaemon | 2016-07-19 22:25:51 +0300 (Tue, 19 Jul 2016) | 3 lines
+
+- CompressedWriter: remove superfluous version check.
++ Tag: Add hotplug for integrated debugger tracing.
+
+------------------------------------------------------------------------
+r186 | anrdaemon | 2016-07-19 21:55:11 +0300 (Tue, 19 Jul 2016) | 2 lines
+
++ Wordings.
+
+------------------------------------------------------------------------
+r184 | anrdaemon | 2016-07-19 20:15:06 +0300 (Tue, 19 Jul 2016) | 2 lines
+
+* Spelling.
+
+------------------------------------------------------------------------
+r183 | anrdaemon | 2016-07-18 20:09:02 +0300 (Mon, 18 Jul 2016) | 2 lines
+
+* Universal stackable classloader.
+
+------------------------------------------------------------------------
+r182 | anrdaemon | 2016-07-18 19:57:09 +0300 (Mon, 18 Jul 2016) | 2 lines
+
+* Fix classloader for better compatibility with future language changes.
+
+------------------------------------------------------------------------
+r181 | anrdaemon | 2016-07-18 18:39:23 +0300 (Mon, 18 Jul 2016) | 3 lines
+
++ __debugInfo() for easier visual debugging.
+  Print only important data, name before content.
+
+------------------------------------------------------------------------
+r180 | anrdaemon | 2016-07-18 18:17:08 +0300 (Mon, 18 Jul 2016) | 2 lines
+
++ Composer metadata update.
+
+------------------------------------------------------------------------
+r179 | anrdaemon | 2016-07-18 17:20:28 +0300 (Mon, 18 Jul 2016) | 2 lines
+
++ Fix props on composer.json.
+
+------------------------------------------------------------------------
+r177 | anrdaemon | 2016-07-18 02:33:03 +0300 (Mon, 18 Jul 2016) | 6 lines
+
++ Use SplFileObject in Reader/Writer for compatibility with future
+  implementations.
++ Formatting fixes.
++ tag->save->file rather than the other way around.
++ Reimplement CompressedWriter in a more straightforward fashion.
+
+------------------------------------------------------------------------
+r174 | anrdaemon | 2016-07-17 23:12:39 +0300 (Sun, 17 Jul 2016) | 2 lines
+
++ Sort simple arrays before saving.
+
+------------------------------------------------------------------------

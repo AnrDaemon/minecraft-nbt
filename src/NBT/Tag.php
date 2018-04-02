@@ -1,44 +1,48 @@
 <?php
 /** Minecraft NBT Tag base class.
 *
-* @version $Id: Tag.php 189 2016-07-19 20:38:29Z anrdaemon $
+* @version $Id: Tag.php 280 2018-03-27 16:05:51Z anrdaemon $
 */
 
-namespace
-{
-  // Plug the built-in debug logging.
-  if(!class_exists('\tool', false)) { final class tool { static function __callStatic($name, $args) {} } }
-}
-namespace AnrDaemon\Minecraft\NBT
-{
+namespace AnrDaemon\Minecraft\NBT;
+
 use
-  JsonSerializable, Serializable, SplFileObject;
+  AnrDaemon\Minecraft\Interfaces\NbtSource,
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 abstract class Tag
-  implements Serializable, JsonSerializable
+implements NbtTag, \JsonSerializable, \Serializable
 {
-  protected $id;
   public $name = null;
-
-  public function __construct()
-  {
-    $this->id = get_called_class();
-  }
-
-  public function save(SplFileObject $file)
-  {
-    \tool::fprint("Saving ... " . get_called_class() . (isset($this->name) ? ":{$this->name}" : '') . "@{$file->ftell()}");
-
-    return $file->fwrite(isset($this->name) ? Dictionary::mapName($this->id) . TAG_String::store($this->name) : '');
-  }
 
   abstract public function __debugInfo();
 
+  public function __construct($name = null)
+  {
+    $this->name = isset($name) ? (string)$name : null;
+  }
+
+// NbtTag
+
+  abstract public static function readFrom(NbtSource $file);
+
+  public static function createFrom(NbtSource $file)
+  {
+    $_type = Dictionary::mapType($file->fread(1));
+    return $_type::createFrom($file);
+  }
+
+  public function nbtSerialize()
+  {
+    return isset($this->name) ? Dictionary::mapName(get_called_class()) . TAG_String::store($this->name) : '';
+  }
+
 // JsonSerializable
+
   abstract public function jsonSerialize();
 
 // Serializable
+
   abstract public function serialize();
   abstract public function unserialize($blob);
-}
 }

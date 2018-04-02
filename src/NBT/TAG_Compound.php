@@ -1,70 +1,49 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Compound class.
 *
-* @version $Id: TAG_Compound.php 177 2016-07-17 23:33:03Z anrdaemon $
+* @version $Id: TAG_Compound.php 280 2018-03-27 16:05:51Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  SplFileObject;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
 
 final class TAG_Compound
-  extends TAG_Array
-  implements NbtTag
+extends TAG_Array
 {
-  public static function readFrom(Reader $file, TAG_Array $into = null)
+// TAG_Array
+
+  protected function validate($value)
   {
-    \tool::fprint("Reading ... " . get_called_class() . "::" . __FUNCTION__);
+    if(!is_subclass_of($value, __NAMESPACE__ . '\\Tag'))
+      throw new \InvalidArgumentException("Elements of the list must be NBT tags. (And not 'End' tags!)");
+
+    if(!isset($value->name))
+      throw new \InvalidArgumentException("Elements of the list must have a name. Even if it's an empty name.");
+
+    return $value;
+  }
+
+  protected function store()
+  {
+    foreach($this->content as $value)
+      yield $this->validate($value)->nbtSerialize();
+
+    yield Dictionary::mapName('TAG_End');
+  }
+
+// NbtTag
+
+  public static function readFrom(NbtSource $file, TAG_Array $into = null)
+  {
     $self = $into ?: new static();
-    while($tag = $file->read())
+    while($tag = Tag::createFrom($file))
       if($tag instanceof TAG_End)
         break;
       else
         $self[] = $tag;
 
     return $self;
-  }
-
-  public function save(SplFileObject $file)
-  {
-    $result = parent::save($file);
-
-    if(\tool::debug())
-      \tool::fprint("Storing " . count($this->content) . " values @{$file->ftell()} ...");
-
-    $i = 1;
-    foreach($this->content as $tag)
-    {
-      if($tag instanceof TAG_End)
-        break;
-      $result += $tag->save($file);
-      $i++;
-    }
-
-    if(\tool::debug())
-      if($i < count($this->content))
-        # TODO: Check if the tag is TAG_End at insetion times.
-        \tool::fprint("Stored $i values! Don't stuff TAG_End in the middle of compound tags!");
-
-    return $result + $file->fwrite(Dictionary::mapName("TAG_End"));
-  }
-
-// JsonSerializable
-  public function jsonSerialize()
-  {
-    return '{}';
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
   }
 }

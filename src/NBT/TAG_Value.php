@@ -1,43 +1,71 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Value base class.
 *
-* @version $Id: TAG_Value.php 181 2016-07-18 15:39:23Z anrdaemon $
+* @version $Id: TAG_Value.php 282 2018-03-27 20:19:29Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
 use
-  SplFileObject;
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
 
 abstract class TAG_Value
-  extends Tag
+extends Tag
 {
   public $value = null;
 
+  abstract public static function store($value);
+
   public function __construct($name = null, $value = null)
   {
-    \tool::fprint("Creating " . get_called_class() . ":$name(" . (is_a($value, __CLASS__) ? $value->value : $value) . ")");
-    parent::__construct();
-    $this->name = $name;
-    $this->value = is_a($value, __CLASS__) ? $value->value : $value;
+    parent::__construct($name);
+    $this->value = is_subclass_of($value, __CLASS__) ? $value->value : $value;
   }
 
-  public static function createFrom(Reader $file)
+  public function __toString()
   {
-    \tool::fprint("Reading ... " . get_called_class() . "::" . __FUNCTION__);
-    return new static(TAG_String::readFrom($file), static::readFrom($file));
+    return $this->value;
   }
 
-  public function save(SplFileObject $file)
-  {
-    return parent::save($file) + $file->fwrite(static::store($this->value));
-  }
+// Tag
 
   public function __debugInfo()
   {
     return ['name' => $this->name, 'value' => $this->value];
   }
 
-  abstract public static function store($value);
-  abstract public function __toString();
+// NbtTag
+
+  public static function createFrom(NbtSource $file)
+  {
+    return new static(TAG_String::readFrom($file), static::readFrom($file));
+  }
+
+  public function nbtSerialize()
+  {
+    return parent::nbtSerialize() . static::store($this->value);
+  }
+
+// JsonSerializable
+
+  public function jsonSerialize()
+  {
+    error_log(__METHOD__);
+    //return (object)[];
+  }
+
+// Serializable
+
+  public function serialize()
+  {
+    return serialize(['name' => $this->name, 'value' => $this->value]);
+  }
+
+  public function unserialize($blob)
+  {
+    $data = unserialize($blob);
+    $self = new static($data['name'], $data['value']);
+    $this->name = $self->name;
+    $this->value = $self->value;
+  }
 }

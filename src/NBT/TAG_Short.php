@@ -1,56 +1,31 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Short class.
 *
-* @version $Id: TAG_Short.php 177 2016-07-17 23:33:03Z anrdaemon $
+* @version $Id: TAG_Short.php 280 2018-03-27 16:05:51Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  RangeException;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
 
 final class TAG_Short
-  extends TAG_Value
-  implements NbtTag
+extends TAG_Value
 {
-  public static function readFrom(Reader $file)
-  {
-    \tool::fprint("Reading ... " . get_called_class() . "::" . __FUNCTION__);
-    return Reader::convert('s', $file->fread(2));
-  }
-
 // TAG_Value
+
   public static function store($value)
   {
     if($value < -32768 || $value > 32767)
-      throw new RangeException('Value is out of allowed range for given type.');
+      throw new \RangeException('Value is outside allowed range for a given type.');
 
-    if(\tool::debug())
-      \tool::fprint("Storing " . get_called_class() . ":$value");
-
-    return Writer::convert('s', (int)$value);
+    return pack('n', (int)$value);
   }
 
-  public function __toString()
-  {
-    return $this->value;
-  }
+// NbtTag
 
-// JsonSerializable
-  public function jsonSerialize()
+  public static function readFrom(NbtSource $file)
   {
-    error_log(__METHOD__);
-  }
-
-// Serializable
-  public function serialize()
-  {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
+    return new static(null, Dictionary::unpack('s', $file->fread(2)));
   }
 }

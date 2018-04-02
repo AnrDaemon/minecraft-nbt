@@ -3,28 +3,16 @@
 *
 *
 *
-* @version $Id: Dictionary.php 177 2016-07-17 23:33:03Z anrdaemon $
+* @version $Id: Dictionary.php 280 2018-03-27 16:05:51Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
 define('_IS_BE', unpack('v', pack('S', 1))[1] > 1);
 
-use
-  BadMethodCallException, OutOfBoundsException;
-
 final class Dictionary
 {
-  private static $typeMap;
-
-  private function __construct()
-  {
-    throw new BadMethodCallException('May not initialize tools class.');
-  }
-
-  private static function init()
-  {
-    self::$typeMap = array(
+  private static $typeMap = array(
       "\x0" => __NAMESPACE__ . '\TAG_End',
       "\x1" => __NAMESPACE__ . '\TAG_Byte',
       "\x2" => __NAMESPACE__ . '\TAG_Short',
@@ -36,39 +24,49 @@ final class Dictionary
       "\x8" => __NAMESPACE__ . '\TAG_String',
       "\x9" => __NAMESPACE__ . '\TAG_List',
       "\xA" => __NAMESPACE__ . '\TAG_Compound',
-      "\xB" => __NAMESPACE__ . '\TAG_Int_Array'
-    );
+      "\xB" => __NAMESPACE__ . '\TAG_Int_Array',
+      "\xC" => __NAMESPACE__ . '\TAG_Long_Array',
+  );
+  private static $nameMap;
+
+  private static function init()
+  {
+    self::$nameMap = array_flip(self::$typeMap);
   }
 
   public static function mapType($type)
   {
-    if(!is_array(self::$typeMap))
-      self::init();
-
     if(!isset(self::$typeMap[$type]))
-      throw new OutOfBoundsException("Unknown tag type " . ord($type));
+      throw new \OutOfBoundsException("Unknown tag type 0x" . bin2hex($type));
 
     return self::$typeMap[$type];
   }
 
   public static function mapName($name)
   {
-    if(!is_array(self::$typeMap))
-      self::init();
-
-    $tag = array_search($name, self::$typeMap);
-    if($tag === false)
-      $tag = array_search(__NAMESPACE__ . "\\$name", self::$typeMap);
-
-    if($tag === false)
-      throw new OutOfBoundsException("Unknown tag name " . ord($type));
+    $tag = self::$nameMap[$name] ?? self::$nameMap[__NAMESPACE__ . "\\$name"] ?? null;
+    if(!isset($tag))
+      throw new \OutOfBoundsException("Unknown tag name '$name'");
 
     return $tag;
   }
 
-// unpack() wrapper, because damned "machine byte order"
   public static function convert($value)
   {
     return _IS_BE ? $value : strrev($value);
   }
+
+// unpack() wrapper, because damned "machine byte order"
+  public static function unpack($format, $value)
+  {
+    return unpack($format, static::convert($value))[1];
+  }
+
+  public function __construct()
+  {
+    if(!isset(self::$nameMap))
+      self::init();
+  }
 }
+
+return new Dictionary;

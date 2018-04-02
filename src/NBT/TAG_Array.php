@@ -1,49 +1,62 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_Array base class.
 *
-* @version $Id: TAG_Array.php 181 2016-07-18 15:39:23Z anrdaemon $
+* @version $Id: TAG_Array.php 282 2018-03-27 20:19:29Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
 use
-  ArrayAccess, Countable, Iterator;
+  AnrDaemon\Minecraft\Interfaces\NbtSource;
 
 abstract class TAG_Array
-  extends Tag
-  implements
-    ArrayAccess,
-    Countable,
-    Iterator
+extends Tag
+implements \ArrayAccess, \Countable, \Iterator
 {
-  protected $content;
+  protected $content = array();
   protected $position = 0;
 
-  public function __construct($name = null, $content = array())
+  abstract protected function validate($value);
+  abstract protected function store();
+
+  public function __construct($name = null, array $content = array())
   {
-    \tool::fprint("Creating " . get_called_class() . (count($content) ? " with " . count($content) . " elements" : ''));
-    parent::__construct();
-    $this->name = $name;
-    $this->content = $content ? (array)$content : array();
+    parent::__construct($name);
+    foreach($content as $value)
+    {
+      $this[] = $value;
+    }
   }
 
-  public static function createFrom(Reader $file)
-  {
-    $self = new static(TAG_String::readFrom($file));
-    return static::readFrom($file, $self);
-  }
+// Tag
 
   public function __debugInfo()
   {
     return ['name' => $this->name, 'content' => $this->content];
   }
 
-  abstract public static function readFrom(Reader $file, TAG_Array $into = null);
+// NbtTag
+
+  public static function createFrom(NbtSource $file)
+  {
+    $self = new static(TAG_String::readFrom($file));
+    return static::readFrom($file, $self);
+  }
+
+  public function nbtSerialize()
+  {
+    $result = parent::nbtSerialize();
+    foreach($this->store() as $value)
+      $result .= $value;
+
+    return $result;
+  }
 
 // ArrayAccess
 
   public function offsetSet($offset, $value)
   {
+    $value = $this->validate($value);
     if(is_null($offset))
       $this->content[] = $value;
     else
@@ -81,7 +94,7 @@ abstract class TAG_Array
 
   public function key()
   {
-    return $this->valid() ? key($this->content) : null;
+    return key($this->content);
   }
 
   public function next()
@@ -102,6 +115,29 @@ abstract class TAG_Array
 
   public function valid()
   {
-    return $this->position < sizeof($this->content);
+    return $this->position < count($this->content);
+  }
+
+// JsonSerializable
+
+  public function jsonSerialize()
+  {
+    error_log(__METHOD__);
+    //return (object)[];
+  }
+
+// Serializable
+
+  public function serialize()
+  {
+    return serialize(['name' => $this->name, 'content' => $this->content]);
+  }
+
+  public function unserialize($blob)
+  {
+    $data = unserialize($blob);
+    $self = new static($data['name'], $data['content']);
+    $this->name = $self->name;
+    $this->content = $self->content;
   }
 }

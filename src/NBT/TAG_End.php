@@ -1,60 +1,37 @@
 <?php
-/** Minecraft NBT Tag base class.
+/** Minecraft NBT TAG_End class.
 *
-* @version $Id: TAG_End.php 181 2016-07-18 15:39:23Z anrdaemon $
+* @version $Id: TAG_End.php 280 2018-03-27 16:05:51Z anrdaemon $
 */
 
 namespace AnrDaemon\Minecraft\NBT;
 
-use AnrDaemon\Minecraft\Interfaces\NbtTag,
-  SplFileObject;
+use
+  AnrDaemon\Minecraft\Interfaces\NbtSource,
+  AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 final class TAG_End
-  extends Tag
-  implements NbtTag
+implements NbtTag
 {
-  public static function readFrom(Reader $file)
-  {
-    throw new BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
-  }
-
-  public static function createFrom(Reader $file)
-  {
-    \tool::fprint("Creating " . get_called_class());
-    return new static();
-  }
-
-  public function save(SplFileObject $file)
-  {
-    \tool::fprint("Saving ... " . get_called_class());
-    return $file->fwrite(Dictionary::mapName($this->id));
-  }
-
   public function __toString()
   {
     return;
   }
 
-  public function __debugInfo()
+// NbtTag
+
+  public static function readFrom(NbtSource $file)
   {
-    return [];
+    throw new \BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
   }
 
-// JsonSerializable
-  public function jsonSerialize()
+  public static function createFrom(NbtSource $file)
   {
-    error_log(__METHOD__);
+    return new static();
   }
 
-// Serializable
-  public function serialize()
+  public function nbtSerialize()
   {
-    error_log(__METHOD__);
-  }
-
-  public function unserialize($blob)
-  {
-    error_log(__METHOD__);
-    error_log($blob);
+    return Dictionary::mapName(get_called_class());
   }
 }
