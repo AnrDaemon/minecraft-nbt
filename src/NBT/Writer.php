@@ -1,12 +1,13 @@
 <?php
+
 /** Minecraft NBT writer class.
-*
-* @version $Id$
-*/
+ *
+ * @version $Id$
+ */
 
 namespace AnrDaemon\Minecraft\NBT;
 
-if(!method_exists('SplFileObject', 'fwrite'))
+if (!method_exists('SplFileObject', 'fwrite'))
   trigger_error('Requires SplFileObject::fwrite(). Upgrade your PHP.', E_USER_ERROR);
 
 class Writer
@@ -24,7 +25,7 @@ class Writer
     unset($this->file);
   }
 
-  public function write(Tag $tag)
+  public function write(Tag $tag): int
   {
     return $this->file->fwrite($tag->nbtSerialize());
   }

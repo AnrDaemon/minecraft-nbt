@@ -1,10 +1,9 @@
 <?php
+
 /** NBT dictionary and conversion tools
-*
-*
-*
-* @version $Id$
-*/
+ *
+ * @version $Id$
+ */
 
 namespace AnrDaemon\Minecraft\NBT;
 
@@ -13,19 +12,19 @@ define('_IS_BE', unpack('v', pack('S', 1))[1] > 1);
 final class Dictionary
 {
   private static $typeMap = array(
-      "\x0" => __NAMESPACE__ . '\TAG_End',
-      "\x1" => __NAMESPACE__ . '\TAG_Byte',
-      "\x2" => __NAMESPACE__ . '\TAG_Short',
-      "\x3" => __NAMESPACE__ . '\TAG_Int',
-      "\x4" => __NAMESPACE__ . '\TAG_Long',
-      "\x5" => __NAMESPACE__ . '\TAG_Float',
-      "\x6" => __NAMESPACE__ . '\TAG_Double',
-      "\x7" => __NAMESPACE__ . '\TAG_Byte_Array',
-      "\x8" => __NAMESPACE__ . '\TAG_String',
-      "\x9" => __NAMESPACE__ . '\TAG_List',
-      "\xA" => __NAMESPACE__ . '\TAG_Compound',
-      "\xB" => __NAMESPACE__ . '\TAG_Int_Array',
-      "\xC" => __NAMESPACE__ . '\TAG_Long_Array',
+    "\x0" => __NAMESPACE__ . '\TAG_End',
+    "\x1" => __NAMESPACE__ . '\TAG_Byte',
+    "\x2" => __NAMESPACE__ . '\TAG_Short',
+    "\x3" => __NAMESPACE__ . '\TAG_Int',
+    "\x4" => __NAMESPACE__ . '\TAG_Long',
+    "\x5" => __NAMESPACE__ . '\TAG_Float',
+    "\x6" => __NAMESPACE__ . '\TAG_Double',
+    "\x7" => __NAMESPACE__ . '\TAG_Byte_Array',
+    "\x8" => __NAMESPACE__ . '\TAG_String',
+    "\x9" => __NAMESPACE__ . '\TAG_List',
+    "\xA" => __NAMESPACE__ . '\TAG_Compound',
+    "\xB" => __NAMESPACE__ . '\TAG_Int_Array',
+    "\xC" => __NAMESPACE__ . '\TAG_Long_Array',
   );
   private static $nameMap;
 
@@ -34,18 +33,18 @@ final class Dictionary
     self::$nameMap = array_flip(self::$typeMap);
   }
 
-  public static function mapType($type)
+  public static function mapType($type): string
   {
-    if(!isset(self::$typeMap[$type]))
+    if (!isset(self::$typeMap[$type]))
       throw new \OutOfBoundsException("Unknown tag type 0x" . bin2hex($type));
 
     return self::$typeMap[$type];
   }
 
-  public static function mapName($name)
+  public static function mapName($name): string
   {
     $tag = self::$nameMap[$name] ?? self::$nameMap[__NAMESPACE__ . "\\$name"] ?? null;
-    if(!isset($tag))
+    if (!isset($tag))
       throw new \OutOfBoundsException("Unknown tag name '$name'");
 
     return $tag;
@@ -56,7 +55,7 @@ final class Dictionary
     return _IS_BE ? $value : strrev($value);
   }
 
-// unpack() wrapper, because damned "machine byte order"
+  // unpack() wrapper, because damned "machine byte order"
   public static function unpack($format, $value)
   {
     return unpack($format, static::convert($value))[1];
@@ -64,7 +63,7 @@ final class Dictionary
 
   public function __construct()
   {
-    if(!isset(self::$nameMap))
+    if (!isset(self::$nameMap))
       self::init();
   }
 }

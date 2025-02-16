@@ -1,8 +1,9 @@
 <?php
+
 /** Minecraft NBT TAG_End class.
-*
-* @version $Id$
-*/
+ *
+ * @version $Id$
+ */
 
 namespace AnrDaemon\Minecraft\NBT;
 
@@ -15,22 +16,22 @@ implements NbtTag
 {
   public function __toString()
   {
-    return;
+    return "";
   }
 
-// NbtTag
+  // NbtTag
 
-  public static function readFrom(NbtSource $file)
+  public static function readFrom(NbtSource $file): NbtTag
   {
     throw new \BadMethodCallException('You may not retrieve something that exists only as a concept. Not really.');
   }
 
-  public static function createFrom(NbtSource $file)
+  public static function createFrom(NbtSource $file): NbtTag
   {
     return new static();
   }
 
-  public function nbtSerialize()
+  public function nbtSerialize(): string
   {
     return Dictionary::mapName(get_called_class());
   }

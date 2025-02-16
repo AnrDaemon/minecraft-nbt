@@ -1,20 +1,27 @@
 <?php
+
 /** Minecraft NBT TAG_Value base class.
-*
-* @version $Id$
-*/
+ *
+ * @version $Id$
+ */
 
 namespace AnrDaemon\Minecraft\NBT;
 
 use
   AnrDaemon\Minecraft\Interfaces\NbtSource;
+use AnrDaemon\Minecraft\Interfaces\NbtTag;
 
 abstract class TAG_Value
 extends Tag
 {
   public $value = null;
 
-  abstract public static function store($value);
+  /**
+   *
+   * @param mixed $value
+   * @return string
+   */
+  abstract public static function store($value): string;
 
   public function __construct($name = null, $value = null)
   {
@@ -27,34 +34,39 @@ extends Tag
     return $this->value;
   }
 
-// Tag
+  // Tag
 
   public function __debugInfo()
   {
     return ['name' => $this->name, 'value' => $this->value];
   }
 
-// NbtTag
+  // NbtTag
 
-  public static function createFrom(NbtSource $file)
+  /** Read a name-value tag pair from the stream
+   *
+   * @param NbtSource $file
+   * @return TAG_Value
+   */
+  public static function createFrom(NbtSource $file): NbtTag
   {
     return new static(TAG_String::readFrom($file), static::readFrom($file));
   }
 
-  public function nbtSerialize()
+  public function nbtSerialize(): string
   {
     return parent::nbtSerialize() . static::store($this->value);
   }
 
-// JsonSerializable
+  // JsonSerializable
 
-  public function jsonSerialize()
+  public function jsonSerialize(): mixed
   {
     error_log(__METHOD__);
-    //return (object)[];
+    return [$this->name => $this->value,];
   }
 
-// Serializable
+  // Serializable
 
   public function serialize()
   {

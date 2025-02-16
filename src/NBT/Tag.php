@@ -1,8 +1,9 @@
 <?php
+
 /** Minecraft NBT Tag base class.
-*
-* @version $Id$
-*/
+ *
+ * @version $Id$
+ */
 
 namespace AnrDaemon\Minecraft\NBT;
 
@@ -22,26 +23,35 @@ implements NbtTag, \JsonSerializable, \Serializable
     $this->name = isset($name) ? (string)$name : null;
   }
 
-// NbtTag
+  // NbtTag
 
-  abstract public static function readFrom(NbtSource $file);
+  abstract public static function readFrom(NbtSource $file): NbtTag;
 
-  public static function createFrom(NbtSource $file)
+  /** Read a tag from the stream
+   *
+   * This factory method reads the tag type byte from the stream,
+   * maps it to the correct tag class and invokes the appropriate
+   * child factory method.
+   *
+   * @param NbtSource $file
+   * @return Tag
+   */
+  public static function createFrom(NbtSource $file): NbtTag
   {
     $_type = Dictionary::mapType($file->fread(1));
     return $_type::createFrom($file);
   }
 
-  public function nbtSerialize()
+  public function nbtSerialize(): string
   {
     return isset($this->name) ? Dictionary::mapName(get_called_class()) . TAG_String::store($this->name) : '';
   }
 
-// JsonSerializable
+  // JsonSerializable
 
-  abstract public function jsonSerialize();
+  abstract public function jsonSerialize(): mixed;
 
-// Serializable
+  // Serializable
 
   abstract public function serialize();
   abstract public function unserialize($blob);
